@@ -1,0 +1,32 @@
+.bulk-product {
+  display: flex;
+  align-items: center;
+  border: 2px solid gray;
+  border-radius: 5px;
+  margin-bottom: 40px;
+  padding: 20px;
+
+  h3{
+    font-size: 18px;
+    width: 20%;
+  }
+
+  img {
+    width: 20%;
+  }
+
+  p.bulk-product__description {
+    font-size: 12px;
+    width: 40%;
+    padding: 0 20px;
+  }
+
+  input {
+    width: 5%;
+  }
+
+  span {
+    width: 15%;
+    text-align: center;
+  }
+}
