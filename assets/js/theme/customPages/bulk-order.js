@@ -36,7 +36,7 @@ export default class BulkOrder extends PageManager {
                 for (let i = 0; i < inputs.length; i++) {
                     total += prices[i].innerText * inputs[i].value;
                 }
-                totalPrice.innerText = `${total}`;
+                totalPrice.innerText = `$${total}`;
             });
         }
     }
