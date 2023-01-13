@@ -1,6 +1,7 @@
-{{~inject 'customer_group_name' customer_group_name}}
-{{~inject 'secureBaseUrl' secure_base_url}}
-{{~inject 'cartId' cart_id}}
+{{inject 'customer_group_name' customer_group_name}}
+{{inject 'secureBaseUrl' secure_base_url}}
+{{inject 'cartId' cart_id}}
+{{inject 'products' cart_id}}
 {{#partial "page"}}
     <div id="page-content" style="display: none">{{{page.content}}}</div>
     <div id="bulk-products"></div>

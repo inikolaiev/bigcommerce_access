@@ -2,7 +2,6 @@ import PageManager from '../page-manager';
 import utils from '@bigcommerce/stencil-utils';
 import csv from 'jquery-csv';
 
-
 export default class BulkOrder extends PageManager {
     onReady() {
         this.renderProducts();
@@ -14,15 +13,17 @@ export default class BulkOrder extends PageManager {
             const urls = [];
 
             inputs.each(function () {
-                urls.push(`/cart.php?action=add&sku=${this.name}&qty=${this.value}`);
+                if (this.value > 0) urls.push(`/cart.php?action=add&sku=${this.name}&qty=${this.value}`);
             });
 
             const send = url =>
-                new Promise(resolve => resolve($.get(url)));
+                new Promise(resolve => resolve(fetch(url)));
 
             for (let i = 0, p = Promise.resolve(); i < urls.length; i++) {
                 p = p.then(() => send(urls[i])
-                    .then(() => this.updateCartContent()));
+                    .then(() => this.updateCartContent()).catch(e => {
+                        console.log(e);
+                    }));
             }
         });
     }
@@ -74,6 +75,14 @@ export default class BulkOrder extends PageManager {
                                    node {
                                        name
                                        sku
+                                       inventory {
+                                           hasVariantInventory
+                                           isInStock
+                                           aggregated {
+                                               availableToSell
+                                               warningLevel
+                                           }
+                                       }
                                        images {
                                             edges {
                                                 node {
@@ -135,6 +144,7 @@ export default class BulkOrder extends PageManager {
         const quantityInput = document.createElement('input');
         const image = document.createElement('img');
         const imageCSV = document.createElement('img');
+        const itemsInStock = document.createElement('span');
         if (product) {
             imageCSV.src = product.customImageUrl;
             image.src = product.node.images.edges[0].node.urlOriginal;
@@ -142,9 +152,14 @@ export default class BulkOrder extends PageManager {
             quantityInput.name = product.node.sku;
             quantityInput.placeholder = 'qty';
             quantityInput.min = '0';
+            quantityInput.max = product.node.inventory.aggregated?.availableToSell;
+            itemsInStock.innerText = `In stock:${product.node.inventory.aggregated?.availableToSell || 'no track'}`;
             quantityInput.step = '1';
             quantityInput.oninput = function () {
                 this.value = Math.round(this.value);
+                if (this.value > Number(this.max)) {
+                    this.value = this.max;
+                }
             };
             quantityInput.value = '0';
             productWrapper.classList.add('bulk-product');
@@ -153,7 +168,7 @@ export default class BulkOrder extends PageManager {
             description.classList.add('bulk-product__description');
             price.classList.add('price');
             price.innerText = product.node.prices.basePrice.value;
-            productWrapper.append(title, image, imageCSV, description, price, quantityInput);
+            productWrapper.append(title, image, imageCSV, description, price, quantityInput, itemsInStock);
         } else {
             productWrapper.classList.add('bulk-product');
             productWrapper.innerText = 'Sorry, there are no products for you';
