@@ -58,16 +58,20 @@ export default class BulkOrder extends PageManager {
             .split(' ')
             .join('-');
 
-        return fetch(`https://store-q6toa31zw.mybigcommerce.com/content/${customerGroup.charAt(0).toUpperCase() + customerGroup.slice(1)}.csv`)
+        return fetch(`/content/${customerGroup.charAt(0).toUpperCase() + customerGroup.slice(1)}.csv`)
             .then((csvAsString) => csvAsString.text())
             .then(data => csv.toArrays(data))
             .then(productArray => {
                 if (productArray.length > 0) {
                     return productArray.filter((product, index) => index !== 0);
                 }
+                this.isLoading(false);
                 return null;
             })
-            .catch(() => null);
+            .catch(() => {
+                this.isLoading(false);
+                return null;
+            });
     }
     fetchProductsAllProducts() {
         return fetch('/graphql', {
@@ -147,7 +151,6 @@ export default class BulkOrder extends PageManager {
         }));
     }
     createProductTemplate(product) {
-        console.log(product.customImageUrl);
         const products = document.getElementById('bulk-products');
         const productWrapper = document.createElement('div');
         const title = document.createElement('h3');
@@ -159,7 +162,7 @@ export default class BulkOrder extends PageManager {
         const imageCSV = document.createElement('img');
         const itemsInStock = document.createElement('span');
         if (product) {
-            imageCSVWrapper.href = product.customImageUrl;
+            imageCSVWrapper.href = product?.customImageUrl;
             imageCSVWrapper.target = '_blank';
             imageCSV.src = product.customImageUrl;
             imageCSVWrapper.append(imageCSV);
