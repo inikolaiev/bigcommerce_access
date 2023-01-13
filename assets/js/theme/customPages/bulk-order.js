@@ -6,6 +6,14 @@ export default class BulkOrder extends PageManager {
     onReady() {
         this.renderProducts();
     }
+    isLoading(isLoading) {
+        const wrapper = document.getElementById('bulk-wrapper');
+        if (isLoading) {
+            wrapper.classList.add('load');
+        } else {
+            wrapper.classList.remove('load');
+        }
+    }
     addToCart() {
         const addToCartButton = $('#add-bulk-cart');
         addToCartButton.on('click', () => {
@@ -39,7 +47,7 @@ export default class BulkOrder extends PageManager {
                 for (let i = 0; i < inputs.length; i++) {
                     total += prices[i].innerText * inputs[i].value;
                 }
-                totalPrice.innerText = `$${total}`;
+                totalPrice.innerText = `$${total.toFixed(2)}`;
             });
         }
     }
@@ -109,6 +117,7 @@ export default class BulkOrder extends PageManager {
             .catch(error => console.log('error', error));
     }
     renderProducts() {
+        this.isLoading(true);
         this.getProductsSKu().then((data => {
             if (!data || !data.length) return this.createProductTemplate(null);
             const requiredProducts = [...data];
@@ -127,10 +136,13 @@ export default class BulkOrder extends PageManager {
                         }
                     });
                 });
+                this.isLoading(false);
                 fitProducts.map(product => this.createProductTemplate(product));
             }).then(() => {
                 this.updateTotal();
                 this.addToCart();
+            }).finally(() => {
+                this.isLoading(false);
             });
         }));
     }
@@ -143,11 +155,15 @@ export default class BulkOrder extends PageManager {
         const price = document.createElement('span');
         const quantityInput = document.createElement('input');
         const image = document.createElement('img');
+        const imageCSVWrapper = document.createElement('a');
         const imageCSV = document.createElement('img');
         const itemsInStock = document.createElement('span');
         if (product) {
+            imageCSVWrapper.href = product.customImageUrl;
+            imageCSVWrapper.target = '_blank';
             imageCSV.src = product.customImageUrl;
-            image.src = product.node.images.edges[0].node.urlOriginal;
+            imageCSVWrapper.append(imageCSV);
+            image.src = product.node.images.edges[0].node?.urlOriginal;
             quantityInput.type = 'number';
             quantityInput.name = product.node.sku;
             quantityInput.placeholder = 'qty';
@@ -168,7 +184,7 @@ export default class BulkOrder extends PageManager {
             description.classList.add('bulk-product__description');
             price.classList.add('price');
             price.innerText = product.node.prices.basePrice.value;
-            productWrapper.append(title, image, imageCSV, description, price, quantityInput, itemsInStock);
+            productWrapper.append(title, image, imageCSVWrapper, description, price, quantityInput, itemsInStock);
         } else {
             productWrapper.classList.add('bulk-product');
             productWrapper.innerText = 'Sorry, there are no products for you';
