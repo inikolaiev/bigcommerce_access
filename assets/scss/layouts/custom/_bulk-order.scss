@@ -103,3 +103,50 @@
   font-size: 30px;
 }
 
+.modal-grave-open {
+  display: block;
+  visibility: visible;
+  opacity: 1;
+}
+
+#modal-grave {
+  height: 80vh;
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    select {
+      width: 100px;
+    }
+  }
+
+  .image-wrapper {
+    position: relative;
+    margin: 0 auto;
+    width: 70%;
+    min-width: 350px;
+    display: flex;
+
+    img{
+      width: 100%;
+      margin-top: auto;
+    }
+  }
+}
+
+.grave-canvas-container {
+  position: absolute !important;
+  border: 1px solid red;
+}
+
+.result-image {
+  img {
+    max-width: 300px;
+  }
+}
+
+[data-product-option-change] {
+  //visibility: hidden;
+  //height: 0;
+}

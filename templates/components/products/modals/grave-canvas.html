@@ -1,0 +1,17 @@
+<div class="modal-background"></div>
+<div class="modal" id="modal-grave">
+    <div class="modal-header">
+        <label for="font">Choose font</label><select id="font">
+            <option>arial</option>
+            <option>tahoma</option>
+            <option>times new roman</option>
+        </select>
+        <button id='saveImage' class="button--primary">Save </button>
+
+        <button id="close">Close X</button>
+    </div>
+    <div class="image-wrapper">
+        <img src="{{getImageSrcset image 1x='630w'}}" crossorigin="anonymous" class="canvas-image" alt="">
+        <canvas id="grave-canvas"></canvas>
+    </div>
+</div>

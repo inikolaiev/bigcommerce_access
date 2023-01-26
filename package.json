@@ -10,6 +10,7 @@
     "core-js": "^3.9.0",
     "creditcards": "^4.2.0",
     "easyzoom": "^2.5.3",
+    "fabric": "^5.3.0",
     "focus-trap": "^6.3.0",
     "focus-within-polyfill": "^5.1.0",
     "formdata-polyfill": "^3.0.20",
