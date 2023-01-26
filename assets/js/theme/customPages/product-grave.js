@@ -65,17 +65,18 @@ export default class ProductGrave extends PageManager {
             }));
 
             // add engraving to combined canvas
-            const existImgInstance = new fabric.Image(graveImg, {
-                left: this.canvasContainer.offsetLeft * imageToEngrave.naturalWidth / imageToEngrave.clientWidth,
-                top: this.canvasContainer.offsetTop * imageToEngrave.naturalWidth / imageToEngrave.clientWidth,
-                width: imageToEngrave.naturalWidth * canvasImageWidth / 100,
-                height: imageToEngrave.naturalHeight * canvasImageHeight / 100,
-            });
-            combinedCanvas.add(existImgInstance);
-            combinedCanvas.requestRenderAll();
-
-            // collaborate product image and engrave for image
-            this.createResultImage(combinedCanvas, combinedCanvasElement);
+            graveImg.onload = () => {
+                const existImgInstance = new fabric.Image(graveImg, {
+                    left: this.canvasContainer.offsetLeft * imageToEngrave.naturalWidth / imageToEngrave.clientWidth,
+                    top: this.canvasContainer.offsetTop * imageToEngrave.naturalWidth / imageToEngrave.clientWidth,
+                    scaleX: (imageToEngrave.naturalWidth * canvasImageWidth / 100) / graveImg.naturalWidth,
+                    scaleY: (imageToEngrave.naturalHeight * canvasImageHeight / 100) / graveImg.naturalHeight,
+                });
+                combinedCanvas.add(existImgInstance);
+                combinedCanvas.requestRenderAll();
+                // collaborate product image and engrave for image
+                this.createResultImage(combinedCanvas, combinedCanvasElement);
+            };
         });
     }
     addText(canvas) {
@@ -102,7 +103,6 @@ export default class ProductGrave extends PageManager {
 
     createResultImage(combinedCanvas, combinedCanvasElement) {
         const timeout = setTimeout(() => {
-            document.querySelector('body').appendChild(combinedCanvasElement);
             const resultImage = document.createElement('img');
             resultImage.src = combinedCanvas.toDataURL('image/png');
             const resultImageContainer = document.querySelector('.result-image');
@@ -117,6 +117,6 @@ export default class ProductGrave extends PageManager {
                 document.querySelector('.form-file').files = dataTransfer.files;
             });
             clearTimeout(timeout);
-        }, 5000);
+        }, 1000);
     }
 }
