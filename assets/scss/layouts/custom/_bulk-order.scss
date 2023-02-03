@@ -111,13 +111,20 @@
 
 #modal-grave {
   height: 80vh;
+
   .modal-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
+    flex-wrap: wrap;
 
-    select {
-      width: 100px;
+    .input-group {
+      width: 120px;
+      padding: 5px;
+    }
+
+    input, select {
+      width: 100%;
     }
   }
 
@@ -132,6 +139,12 @@
       width: 100%;
       margin-top: auto;
     }
+  }
+
+  #close{
+    position: absolute;
+    top: 10px;
+    right: 10px;
   }
 }
 

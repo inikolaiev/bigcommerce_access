@@ -8,12 +8,21 @@ export default class ProductGrave extends PageManager {
         this.oText = null;
         this.canvas = null;
         this.canvasContainer = null;
+        this.context.customFields.forEach(field => {
+            if (field.name === 'engrave_positionXY') {
+                this.engravePosition = field.value;
+            } else if (field.name === 'engrave_position_width') {
+                this.engravePositionWidth = field.value;
+            } else if (field.name === 'engrave_position_height') {
+                this.engravePositionHeight = field.value;
+            }
+        });
     }
     openModal() {
         $('#open-engrave-modal').click(() => {
             $('#modal-grave').addClass('modal-grave-open');
             $('.modal-background').css('display', 'block');
-            this.createCanvas();
+            this.createCanvas(...this.engravePosition.split(','));
             this.openTimes++;
         });
 
@@ -23,13 +32,7 @@ export default class ProductGrave extends PageManager {
         });
     }
 
-    createCanvas() {
-        // get data from product custom fields
-        const [engravePosition, engravePositionWidth, engravePositionHeight] = this.context.customFields;
-        const [marginLeftFromImage, marginTopFromImage] = engravePosition.value.split(',');
-        const canvasImageWidth = engravePositionWidth.value;
-        const canvasImageHeight = engravePositionHeight.value;
-
+    createCanvas(marginLeftFromImage, marginTopFromImage) {
         const imageToEngrave = document.querySelector('.canvas-image');
         const imageToEngraveWidth = imageToEngrave.clientWidth;
         const imageToEngraveHeight = imageToEngrave.clientHeight;
@@ -42,10 +45,19 @@ export default class ProductGrave extends PageManager {
             this.canvasContainer = document.querySelector('.grave-canvas-container');
             this.canvasContainer.style.top = `${marginTopFromImage}%`;
             this.canvasContainer.style.left = `${marginLeftFromImage}%`;
-            this.canvas.setDimensions({ width: imageToEngraveWidth * canvasImageWidth / 100, height: imageToEngraveHeight * canvasImageHeight / 100 });
+            this.setCanvasDimensions(imageToEngraveWidth, imageToEngraveHeight);
         }
         this.addText(this.canvas);
         this.changeFont(this.canvas);
+        this.changeFontSize(this.canvas);
+        this.changeFontColor(this.canvas);
+        this.changeFontStyle(this.canvas);
+        this.changeTextAngle(this.canvas);
+        this.changeText(this.canvas);
+        this.changeTextCords(this.canvas);
+        this.changeCords();
+        this.changeCanvasWidth(imageToEngraveWidth, imageToEngraveHeight);
+        this.changeCanvasHeight(imageToEngraveWidth, imageToEngraveHeight);
 
         // save engraving
         document.getElementById('saveImage').addEventListener('click', () => {
@@ -69,8 +81,8 @@ export default class ProductGrave extends PageManager {
                 const existImgInstance = new fabric.Image(graveImg, {
                     left: this.canvasContainer.offsetLeft * imageToEngrave.naturalWidth / imageToEngrave.clientWidth,
                     top: this.canvasContainer.offsetTop * imageToEngrave.naturalWidth / imageToEngrave.clientWidth,
-                    scaleX: (imageToEngrave.naturalWidth * canvasImageWidth / 100) / graveImg.naturalWidth,
-                    scaleY: (imageToEngrave.naturalHeight * canvasImageHeight / 100) / graveImg.naturalHeight,
+                    scaleX: (imageToEngrave.naturalWidth * this.engravePositionWidth / 100) / graveImg.naturalWidth,
+                    scaleY: (imageToEngrave.naturalHeight * this.engravePositionHeight / 100) / graveImg.naturalHeight,
                 });
                 combinedCanvas.add(existImgInstance);
                 combinedCanvas.requestRenderAll();
@@ -95,8 +107,11 @@ export default class ProductGrave extends PageManager {
 
     changeFont(canvas) {
         $('#font').change(function () {
-            const obj = canvas.getActiveObject();
-            obj.set('fontFamily', this.value);
+            canvas.getObjects().forEach(item => {
+                if (item.hasOwnProperty('text')) {
+                    item.set({ fontFamily: this.value });
+                }
+            });
             canvas.renderAll();
         });
     }
@@ -118,5 +133,95 @@ export default class ProductGrave extends PageManager {
             });
             clearTimeout(timeout);
         }, 1000);
+    }
+
+    changeFontSize(canvas) {
+        $('#textSize').change(function () {
+            canvas.getObjects().forEach(item => {
+                if (item.hasOwnProperty('text')) {
+                    item.set({ fontSize: this.value });
+                }
+            });
+            canvas.renderAll();
+        });
+    }
+    changeFontColor(canvas) {
+        $('#textColor').change(function () {
+            canvas.getObjects().forEach(item => {
+                if (item.hasOwnProperty('text')) {
+                    item.set({ fill: this.value });
+                }
+            });
+            canvas.renderAll();
+        });
+    }
+    changeFontStyle(canvas) {
+        $('#setFontStyle').change(function () {
+            canvas.getObjects().forEach(item => {
+                if (item.hasOwnProperty('text')) {
+                    item.set({ fontStyle: this.value });
+                }
+            });
+            canvas.renderAll();
+        });
+    }
+
+    changeTextAngle(canvas) {
+        $('#angle').change(function () {
+            canvas.getObjects().forEach(item => {
+                if (item.hasOwnProperty('text')) {
+                    item.set({ angle: this.value });
+                }
+            });
+            canvas.renderAll();
+        });
+    }
+    changeText(canvas) {
+        $('#setText').keyup(function () {
+            canvas.getObjects().forEach(item => {
+                if (item.hasOwnProperty('text')) {
+                    item.set({ text: this.value });
+                }
+            });
+            canvas.renderAll();
+        });
+    }
+    changeCords() {
+        $('#canvasCord').keyup((e) => {
+            const [marginLeftFromImage, marginTopFromImage] = e.target.value.split(',');
+            this.canvasContainer.style.top = `${marginTopFromImage}%`;
+            this.canvasContainer.style.left = `${marginLeftFromImage}%`;
+        });
+    }
+
+    changeTextCords(canvas) {
+        $('#textPosition').change((e) => {
+            const [left, top] = e.target.value.split(',');
+            canvas.getObjects().forEach(item => {
+                if (item.hasOwnProperty('text')) {
+                    item.set({ left: +left });
+                    item.set({ top: +top });
+                }
+            });
+            canvas.renderAll();
+        });
+    }
+    changeCanvasHeight(imageToEngraveWidth, imageToEngraveHeight) {
+        $('#canvasHeight').change((e) => {
+            this.engravePositionHeight = e.target.value;
+            this.setCanvasDimensions(imageToEngraveWidth, imageToEngraveHeight);
+        });
+    }
+    changeCanvasWidth(imageToEngraveWidth, imageToEngraveHeight) {
+        $('#canvasWidth').change((e) => {
+            this.engravePositionWidth = e.target.value;
+            this.setCanvasDimensions(imageToEngraveWidth, imageToEngraveHeight);
+        });
+    }
+    setCanvasDimensions(imageToEngraveWidth, imageToEngraveHeight) {
+        this.canvas.setDimensions({
+            width: imageToEngraveWidth * this.engravePositionWidth / 100,
+            height: imageToEngraveHeight * this.engravePositionHeight / 100,
+        });
     }
 }

@@ -1,14 +1,68 @@
 <div class="modal-background"></div>
 <div class="modal" id="modal-grave">
     <div class="modal-header">
-        <label for="font">Choose font</label><select id="font">
-            <option>arial</option>
-            <option>tahoma</option>
-            <option>times new roman</option>
-        </select>
-        <button id='saveImage' class="button--primary">Save </button>
+        <div class="input-group">
+            <label for="setText">Set text</label>
+            <input type="text" id="setText">
+        </div>
 
-        <button id="close">Close X</button>
+        <div class="input-group">
+            <label for="font">Choose font</label>
+            <select id="font">
+                <option>arial</option>
+                <option>tahoma</option>
+                <option>times new roman</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <lable for="setFontStyle">Font Style</lable>
+            <select id="setFontStyle">
+                <option>normal</option>
+                <option>italic</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <lable for="textColor">Color</lable>
+            <input type="color" id="textColor">
+        </div>
+
+        <div class="input-group">
+            <lable for="textSize">Font size</lable>
+            <input type="number" min="5" max="40" id="textSize" placeholder="px">
+        </div>
+
+        <div class="input-group">
+            <lable for="angle">Angle</lable>
+            <input type="number" id="angle">
+        </div>
+
+        <div class="input-group">
+            <lable for="canvasWidth">Canvas width</lable>
+            <input type="number" id="canvasWidth">
+        </div>
+
+        <div class="input-group">
+            <lable for="textPosition">Text position</lable>
+            <input type="text" id="textPosition" placeholder="X,Y">
+        </div>
+
+        <div class="input-group">
+            <lable for="canvasHeight">Canvas height</lable>
+            <input type="number" id="canvasHeight">
+        </div>
+
+        <div class="input-group">
+            <lable for="canvasCord">Canvas cords</lable>
+            <input type="text" id="canvasCord" placeholder="X,Y">
+        </div>
+
+        <div class="input-group">
+            <button id='saveImage' class="button--primary">Save </button>
+        </div>
+
+        <button id="close">CLOSE</button>
     </div>
     <div class="image-wrapper">
         <img src="{{getImageSrcset image 1x='630w'}}" crossorigin="anonymous" class="canvas-image" alt="">
