@@ -27,5 +27,21 @@ export default class Global extends PageManager {
         mobileMenuToggle();
         privacyCookieNotification();
         svgInjector();
+
+        $('.slider-discount').slick({
+            dots: false,
+            infinite: true,
+            slidesToShow: 4,
+            slidesToScroll: 4,
+            responsive: [
+                {
+                    breakpoint: 800,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2,
+                    },
+                },
+            ],
+        });
     }
 }
