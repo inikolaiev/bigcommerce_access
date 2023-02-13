@@ -8,15 +8,10 @@ export default class ProductGrave extends PageManager {
         this.oText = null;
         this.canvas = null;
         this.canvasContainer = null;
-        this.context.customFields.forEach(field => {
-            if (field.name === 'engrave_positionXY') {
-                this.engravePosition = field.value;
-            } else if (field.name === 'engrave_position_width') {
-                this.engravePositionWidth = field.value;
-            } else if (field.name === 'engrave_position_height') {
-                this.engravePositionHeight = field.value;
-            }
-        });
+        const fields = this.context.customFields;
+        this.engravePosition = fields.find(f => f.name === 'engrave_positionXY').value;
+        this.engravePositionWidth = fields.find(f => f.name === 'engrave_position_width').value;
+        this.engravePositionHeight = fields.find(f => f.name === 'engrave_position_height').value;
     }
     openModal() {
         $('#open-engrave-modal').click(() => {
@@ -58,6 +53,7 @@ export default class ProductGrave extends PageManager {
         this.changeCords();
         this.changeCanvasWidth(imageToEngraveWidth, imageToEngraveHeight);
         this.changeCanvasHeight(imageToEngraveWidth, imageToEngraveHeight);
+        this.setInitialInputsValue(this.canvas);
 
         // save engraving
         document.getElementById('saveImage').addEventListener('click', () => {
@@ -222,6 +218,35 @@ export default class ProductGrave extends PageManager {
         this.canvas.setDimensions({
             width: imageToEngraveWidth * this.engravePositionWidth / 100,
             height: imageToEngraveHeight * this.engravePositionHeight / 100,
+        });
+    }
+
+    setInitialInputsValue(canvas) {
+        const setTextInput = $('#setText');
+        const setFontSizeInput = $('#textSize');
+        const setAngleInput = $('#angle');
+        const setTextPositionInput = $('#textPosition');
+        const canvasWidthInput = $('#canvasWidth');
+        const canvasHeightInput = $('#canvasHeight');
+        const canvasPositionInput = $('#canvasCord');
+
+        canvas.getObjects().forEach(item => {
+            if (item.hasOwnProperty('text')) {
+                setTextInput.val(item.text);
+                setFontSizeInput.val(item.fontSize);
+                setAngleInput.val(item.angle);
+                setTextPositionInput.val(`${item.left},${item.top}`);
+                canvasWidthInput.val(this.engravePositionWidth);
+                canvasHeightInput.val(this.engravePositionHeight);
+                canvasPositionInput.val(this.engravePosition);
+
+                canvas.on('object:modified', options => {
+                    const obj = options.target;
+                    setTextInput.val(obj.text);
+                    setAngleInput.val(obj.angle.toFixed(0));
+                    setTextPositionInput.val(`${obj.left.toFixed(0)},${obj.top.toFixed(0)}`);
+                });
+            }
         });
     }
 }
