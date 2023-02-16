@@ -236,7 +236,13 @@
                 <div data-product-option-change style="display:none;">
                     {{inject 'showSwatchNames' theme_settings.show_product_swatch_names}}
                     {{#each product.options}}
-                        {{{dynamicComponent 'components/products/options'}}}
+                        {{#or (if display_name "===" "Gift Delivery") (if display_name "===" "Gift message")}}
+                            {{#all (if ../product.price.without_tax.value ">=" 50) (if ../customer "!==" null)}}
+                                {{{dynamicComponent 'components/products/options'}}}
+                            {{/all}}
+                        {{else}}
+                            {{{dynamicComponent 'components/products/options'}}}
+                        {{/or}}
                     {{/each}}
                 </div>
                 <div class="form-field form-field--stock{{#unless product.stock_level}} u-hiddenVisually{{/unless}}">
