@@ -236,9 +236,11 @@
                 <div data-product-option-change style="display:none;">
                     {{inject 'showSwatchNames' theme_settings.show_product_swatch_names}}
                     {{#each product.options}}
-                        {{#or (if display_name "===" "Gift Delivery") (if display_name "===" "Gift message")}}
+                        {{#or (if display_name "===" "Gift Delivery") (if display_name "===" "Gift message") (if display_name "===" "is Gift?") (if display_name "===" "Email of recipient") (if display_name "===" "Address of recipient")}}
                             {{#all (if ../product.price.without_tax.value ">=" 50) (if ../customer "!==" null)}}
-                                {{{dynamicComponent 'components/products/options'}}}
+                                <div class="modifier-{{display_name}}">
+                                    {{{dynamicComponent 'components/products/options'}}}
+                                </div>
                             {{/all}}
                         {{else}}
                             {{{dynamicComponent 'components/products/options'}}}
