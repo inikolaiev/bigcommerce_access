@@ -8,6 +8,9 @@ import ProductDetails from './common/product-details';
 import videoGallery from './product/video-gallery';
 import { classifyForm } from './common/utils/form-utils';
 import modalFactory from './global/modal';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import RecommendedProducts from './components/recommendedProducts/recommended-products';
 
 export default class Product extends PageManager {
     constructor(context) {
@@ -59,7 +62,7 @@ export default class Product extends PageManager {
         });
 
         this.productReviewHandler();
-
+        this.renderRelatedProducts();
         this.giftProduct();
     }
 
@@ -92,6 +95,9 @@ export default class Product extends PageManager {
         const $giftMessage = $modifierInputs.find('.modifier-Gift.message');
         const $giftEmail = $modifierInputs.find('.modifier-Email');
         const $giftAddress = $modifierInputs.find('.modifier-Address');
+
+        if (!$isGiftInput.length) return;
+
         $giftDelivery.find('select').find('option').get(0).remove();
 
         if ($isGiftInput.val() === '121') {
@@ -136,5 +142,11 @@ export default class Product extends PageManager {
                 $giftAddress.find('input').prop('required', true);
             }
         });
+    }
+
+    renderRelatedProducts() {
+        const container = document.getElementById('recommendedProducts');
+        const root = createRoot(container);
+        root.render(<RecommendedProducts context={this.context}/>);
     }
 }

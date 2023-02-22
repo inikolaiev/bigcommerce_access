@@ -10,6 +10,8 @@ product:
         limit: {{theme_settings.productpage_similar_by_views_count}}
 ---
 {{inject 'productId' product.id}}
+{{inject 'customFields' product.custom_fields}}
+{{inject 'productName' product.title}}
 
 {{#partial "page"}}
 

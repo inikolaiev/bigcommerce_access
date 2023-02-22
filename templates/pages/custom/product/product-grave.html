@@ -11,6 +11,7 @@ product:
 ---
 {{inject 'productId' product.id}}
 {{inject 'customFields' product.custom_fields}}
+{{inject 'productName' product.title}}
 
 {{#partial "page"}}
 
@@ -22,6 +23,8 @@ product:
 
     <div>
         {{> components/products/product-view-custom}}
+
+        {{> components/products/tabs}}
     </div>
 
     {{> components/products/schema}}
