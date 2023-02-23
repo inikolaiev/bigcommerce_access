@@ -223,6 +223,10 @@
          <button class="button--primary" id="open-engrave-modal">ENGRAVE THIS ITEM</button>
          {{> components/products/modals/grave-canvas image=product.main_image}}
          <div class="result-image"></div>
+         <div class="result-price">
+             <p id="engrave-message"></p>
+             <p id="custom-price"></p>
+         </div>
      </section>
     <section class="productView-details product-options">
         <div class="productView-options">
@@ -235,16 +239,24 @@
                 <input type="hidden" name="product_id" value="{{product.id}}"/>
                 <div data-product-option-change style="display:none;">
                     {{inject 'showSwatchNames' theme_settings.show_product_swatch_names}}
+                    {{inject 'productPrice' product.price.without_tax.value}}
                     {{#each product.options}}
-                        {{#or (if display_name "===" "Gift Delivery") (if display_name "===" "Gift message") (if display_name "===" "is Gift?") (if display_name "===" "Email of recipient") (if display_name "===" "Address of recipient")}}
-                            {{#all (if ../product.price.without_tax.value ">=" 50) (if ../customer "!==" null)}}
-                                <div class="modifier-{{display_name}}">
-                                    {{{dynamicComponent 'components/products/options'}}}
-                                </div>
-                            {{/all}}
+                        {{#if display_name "===" "Engrave Length"}}
+                            <div class="modifier-engrave-length">
+                                {{{dynamicComponent 'components/products/options'}}}
+                            </div>
                         {{else}}
-                            {{{dynamicComponent 'components/products/options'}}}
-                        {{/or}}
+                            {{#or (if display_name "===" "Gift Delivery") (if display_name "===" "Gift message") (if display_name "===" "is Gift?") (if display_name "===" "Email of recipient") (if display_name "===" "Address of recipient")}}
+                                {{#all (if ../product.price.without_tax.value ">=" 50) (if ../customer "!==" null)}}
+                                    <div class="modifier-{{display_name}}">
+                                        {{{dynamicComponent 'components/products/options'}}}
+                                    </div>
+                                {{/all}}
+                            {{else}}
+                                {{{dynamicComponent 'components/products/options'}}}
+                            {{/or}}
+                        {{/if}}
+
                     {{/each}}
                 </div>
                 <div class="form-field form-field--stock{{#unless product.stock_level}} u-hiddenVisually{{/unless}}">

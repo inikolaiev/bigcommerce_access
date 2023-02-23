@@ -12,6 +12,7 @@ export default class ProductGrave extends PageManager {
         this.engravePosition = fields.find(f => f.name === 'engrave_positionXY').value;
         this.engravePositionWidth = fields.find(f => f.name === 'engrave_position_width').value;
         this.engravePositionHeight = fields.find(f => f.name === 'engrave_position_height').value;
+        this.productPrice = this.context.productPrice;
     }
     openModal() {
         $('#open-engrave-modal').click(() => {
@@ -84,6 +85,27 @@ export default class ProductGrave extends PageManager {
                 combinedCanvas.requestRenderAll();
                 // collaborate product image and engrave for image
                 this.createResultImage(combinedCanvas, combinedCanvasElement);
+
+                this.canvas.getObjects().forEach(item => {
+                    if (item.hasOwnProperty('text')) {
+                        const textLength = item.text.split(' ').join('').length;
+                        document.querySelector('#engrave-message').innerText =
+                            `Engrave text: ${item.text} (${textLength} symbols)`;
+
+                        document.querySelector('#custom-price').innerText =
+                            `Price for engraving ($2 for symbol): $${textLength * 2}`;
+
+                        const engraveLengthInputs = document.querySelectorAll('.modifier-engrave-length .form-radio');
+                        const firstInputValue = engraveLengthInputs[1].value - 1;
+                        console.log(firstInputValue);
+                        for (const input of engraveLengthInputs) {
+                            const actualValue = input.value - firstInputValue;
+                            if (actualValue === textLength) {
+                                input.click()
+                            }
+                        }
+                    }
+                });
             };
         });
     }
