@@ -8,6 +8,21 @@ product:
         limit: {{theme_settings.productpage_related_products_count}}
     similar_by_views:
         limit: {{theme_settings.productpage_similar_by_views_count}}
+gql: "query productById($productId: Int!) {
+    site {
+        product(entityId: $productId) {
+            brand{
+                name
+                seo {
+                    metaDescription
+                }
+                defaultImage {
+                    url(width: 150)
+                }
+            }
+        }
+    }
+}"
 ---
 {{inject 'productId' product.id}}
 {{inject 'customFields' product.custom_fields}}
@@ -20,9 +35,8 @@ product:
     {{#each product.shipping_messages}}
         {{> components/common/alert/alert-info message}}
     {{/each}}
-
     <div>
-        {{> components/products/product-view}}
+        {{> components/products/product-view brand=gql.data.site.product.brand}}
 
         {{{region name="product_below_content"}}}
 

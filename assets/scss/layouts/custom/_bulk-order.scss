@@ -217,3 +217,14 @@
   visibility: hidden;
   height: 0;
 }
+
+.custom-brand {
+  display: flex;
+  gap: 20px;
+  padding: 20px 0;
+  align-items: flex-start;
+
+  p:first-child {
+    font-weight: bold;
+  }
+}

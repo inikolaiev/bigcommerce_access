@@ -96,9 +96,23 @@
         <div class="productView-product">
             <h1 class="productView-title">{{product.title}}</h1>
             {{#if product.brand}}
-                <h2 class="productView-brand">
-                    <a href="{{product.brand.url}}"><span>{{product.brand.name}}</span></a>
-                </h2>
+                <div class="custom-brand">
+                    {{> components/common/responsive-img
+                            image=brand.defaultImage.url
+                            class="productView-image--default"
+                            fallback_size=theme_settings.product_size
+                            lazyload=theme_settings.lazyload_mode
+                            default_image=theme_settings.default_image_product
+                    }}
+                    <div>
+                        <p>{{brand.name}}</p>
+                        {{#if brand.seo.metaDescription}}
+                            <p>{{brand.seo.metaDescription}}</p>
+                        {{else}}
+                            <p>no brand description</p>
+                        {{/if}}
+                    </div>
+                </div>
             {{/if}}
             {{#if product.call_for_price}}
                 <p class="productView-price">
