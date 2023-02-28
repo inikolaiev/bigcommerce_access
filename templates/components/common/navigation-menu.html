@@ -25,6 +25,23 @@
                  </li>
              {{/each}}
         {{/unless}}
+        {{#if theme_settings.show_brand_menu}}
+            <li class="navPages-item">
+                <a class="navPages-action has-subMenu{{#if page_type '==' "brands"}} activePage{{/if}}"
+                   href="/brands"
+                   data-collapsible="navPages-brands"
+                >
+                    Brands
+                    <i class="icon navPages-action-moreIcon" aria-hidden="true">
+                        <svg><use xlink:href="#icon-chevron-down" /></svg>
+                    </i>
+                </a>
+                <div class="navPage-subMenu" id="navPages-brands" aria-hidden="true" tabindex="-1">
+                    <ul class="navPage-subMenu-list" id="brands-menu">
+                    </ul>
+                </div>
+            </li>
+        {{/if}}
     </ul>
     <ul class="navPages-list navPages-list--user">
         {{#if currency_selector.currencies.length '>' 1}}

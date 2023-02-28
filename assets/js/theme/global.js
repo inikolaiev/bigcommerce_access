@@ -27,7 +27,7 @@ export default class Global extends PageManager {
         mobileMenuToggle();
         privacyCookieNotification();
         svgInjector();
-
+        this.brandsMenuInit();
         $('.slider-discount').slick({
             dots: false,
             infinite: true,
@@ -43,5 +43,22 @@ export default class Global extends PageManager {
                 },
             ],
         });
+    }
+
+    brandsMenuInit() {
+        const $brandsWrapper = $('#brands-menu');
+        const alphabets = new Array(26).fill(1).map((_, i) => String.fromCharCode(97 + i));
+        const brandLink = brandLetter =>
+            ` <li class="navPage-subMenu-item">
+                <a class="navPage-subMenu-action navPages-action"
+                   href="/brands?starting=${brandLetter}"
+                >
+                    ${brandLetter.toUpperCase()}
+                </a>
+             </li>`;
+
+        for (const brand of alphabets) {
+            $brandsWrapper.append($.parseHTML(brandLink(brand)));
+        }
     }
 }

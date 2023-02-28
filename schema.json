@@ -4,6 +4,16 @@
     "settings": [
       {
         "type": "heading",
+        "content": "Brands configuration"
+      },
+      {
+        "type": "checkbox",
+        "label": "Show brand menu",
+        "force_reload": true,
+        "id": "show_brand_menu"
+      },
+      {
+        "type": "heading",
         "content": "i18n.BackgroundAndLines"
       },
       {

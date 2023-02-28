@@ -364,7 +364,8 @@
     "afterpay-button-color": "black-mint",
     "amazon-button-color": "Gold",
     "masterpass-button-color": "black",
-    "paymentbuttons-provider-sorting": []
+    "paymentbuttons-provider-sorting": [],
+    "show_brand_menu": true
   },
   "read_only_files": [
     "/assets/scss/components/citadel",
