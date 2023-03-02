@@ -4,6 +4,35 @@
     "settings": [
       {
         "type": "heading",
+        "content": "Register popup settings"
+      },
+      {
+        "type": "text",
+        "content": "Pop-up text",
+        "id": "popup_text"
+      },
+      {
+        "type": "text",
+        "content": "Pop-up image src",
+        "id": "popup_image"
+      },
+      {
+        "type": "color",
+        "content": "Pop-up text color",
+        "id": "popup_color"
+      },
+      {
+        "type": "color",
+        "content": "Pop-up background color",
+        "id": "popup_bg"
+      },
+      {
+        "type": "checkbox",
+        "content": "Pop-up image animation",
+        "id": "popup_animation"
+      },
+      {
+        "type": "heading",
         "content": "Brands configuration"
       },
       {

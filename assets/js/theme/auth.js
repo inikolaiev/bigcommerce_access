@@ -179,6 +179,7 @@ export default class Auth extends PageManager {
         validator.performCheck();
 
         if (validator.areAll('valid')) {
+            localStorage.setItem('newAccount', 'true');
             return;
         }
         event.preventDefault();

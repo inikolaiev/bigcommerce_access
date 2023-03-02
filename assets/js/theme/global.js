@@ -28,6 +28,7 @@ export default class Global extends PageManager {
         privacyCookieNotification();
         svgInjector();
         this.brandsMenuInit();
+        this.registerPopupLoad();
         $('.slider-discount').slick({
             dots: false,
             infinite: true,
@@ -43,6 +44,16 @@ export default class Global extends PageManager {
                 },
             ],
         });
+    }
+
+    registerPopupLoad() {
+        if (localStorage.getItem('newAccount') === 'true' && this.context.template === 'pages/home') {
+            $('#register-modal').show();
+            setTimeout(() => {
+                $('#register-modal').hide();
+                localStorage.setItem('newAccount', 'false');
+            }, 3000);
+        }
     }
 
     brandsMenuInit() {
