@@ -367,11 +367,10 @@
     "paymentbuttons-provider-sorting": [],
     "show_brand_menu": true,
     "popup_text": "Welcome, ",
-    "popup_image": "https://cdn11.bigcommerce.com/s-q6toa31zw/images/stencil/320w/image-manager/-pngtree-welcome-clip-art-colored-5851660.png",
+    "popup_image": "-pngtree-welcome-clip-art-colored-5851660.png",
     "popup_color": "green",
     "popup_bg": "#333",
     "popup_animation": true
-
   },
   "read_only_files": [
     "/assets/scss/components/citadel",

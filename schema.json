@@ -8,27 +8,28 @@
       },
       {
         "type": "text",
-        "content": "Pop-up text",
+        "label": "Pop-up text",
         "id": "popup_text"
       },
       {
         "type": "text",
-        "content": "Pop-up image src",
+        "label": "Pop-up image src",
         "id": "popup_image"
       },
       {
         "type": "color",
-        "content": "Pop-up text color",
+        "label": "Pop-up text color",
         "id": "popup_color"
       },
       {
         "type": "color",
-        "content": "Pop-up background color",
+        "label": "Pop-up background color",
         "id": "popup_bg"
       },
       {
         "type": "checkbox",
-        "content": "Pop-up image animation",
+        "label": "Pop-up image animation",
+        "force_reload": true,
         "id": "popup_animation"
       },
       {
