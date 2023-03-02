@@ -20,6 +20,16 @@ gql: "query productById($productId: Int!) {
                     url(width: 150)
                 }
             }
+            metafields(
+                namespace: \"look\"
+            ){
+                edges {
+                    node {
+                        key
+                        value
+                    }
+                }
+            }
         }
     }
 }"
@@ -36,7 +46,7 @@ gql: "query productById($productId: Int!) {
         {{> components/common/alert/alert-info message}}
     {{/each}}
     <div>
-        {{> components/products/product-view brand=gql.data.site.product.brand}}
+        {{> components/products/product-view brand=gql.data.site.product.brand metafields=gql.data.site.product.metafields.edges}}
 
         {{{region name="product_below_content"}}}
 

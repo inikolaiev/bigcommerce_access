@@ -114,6 +114,11 @@
                     </div>
                 </div>
             {{/if}}
+            {{#if metafields}}
+                {{#each metafields}}
+                    <p>{{node.key}}: {{node.value}}</p>
+                {{/each}}
+            {{/if}}
             {{#if product.call_for_price}}
                 <p class="productView-price">
                     <span>{{product.call_for_price}}</span>
