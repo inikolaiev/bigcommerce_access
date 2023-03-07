@@ -69,19 +69,37 @@ export default function RecommendedProducts({ context }) {
     };
 
     return (
-        <Slider {...sliderSettings}>
-            {fittedProducts.map(product => (
-                <div key={product.node.sku}>
-                    <a href={product.node.path} className={'tag-product'}>
-                        <img src={product.node.images.edges[0].node?.urlOriginal} alt=""/>
-                        <h4>{product.node.name}</h4>
-                        {product.node.prices?.salePrice &&
-                            <p style={{color: 'red'}}>${product.node.prices.salePrice?.value}</p>
-                        }
-                        <p>${product.node.prices.basePrice.value}</p>
-                    </a>
+        <>
+            {fittedProducts.length > 4 ?
+                <Slider {...sliderSettings}>
+                    {fittedProducts.map(product => (
+                        <div key={product.node.sku}>
+                            <a href={product.node.path} className={'tag-product'}>
+                                <img src={product.node.images.edges[0].node?.urlOriginal} alt=""/>
+                                <h4>{product.node.name}</h4>
+                                {product.node.prices?.salePrice &&
+                                    <p style={{color: 'red'}}>${product.node.prices.salePrice?.value}</p>
+                                }
+                                <p>${product.node.prices.basePrice.value}</p>
+                            </a>
+                        </div>
+                    ))}
+                </Slider> :
+                <div style={{display: "flex", alignItems: "flex-end"}}>
+                    {fittedProducts.map(product => (
+                        <div key={product.node.sku} style={{flexBasis: '100%'}}>
+                            <a href={product.node.path} className={'tag-product'}>
+                                <img src={product.node.images.edges[0].node?.urlOriginal} alt=""/>
+                                <h4>{product.node.name}</h4>
+                                {product.node.prices?.salePrice &&
+                                    <p style={{color: 'red'}}>${product.node.prices.salePrice?.value}</p>
+                                }
+                                <p>${product.node.prices.basePrice.value}</p>
+                            </a>
+                        </div>
+                    ))}
                 </div>
-            ))}
-        </Slider>
+            }
+        </>
     );
 }
