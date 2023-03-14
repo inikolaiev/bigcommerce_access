@@ -11,6 +11,7 @@ import modalFactory from './global/modal';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import RecommendedProducts from './components/recommendedProducts/recommended-products';
+import RecommendedProductsSku from './components/recommendedProductsBySku/recommended-products-sku';
 
 export default class Product extends PageManager {
     constructor(context) {
@@ -63,6 +64,7 @@ export default class Product extends PageManager {
 
         this.productReviewHandler();
         this.renderRelatedProducts();
+        this.renderRecommendedProductsSku();
         this.giftProduct();
     }
 
@@ -145,8 +147,13 @@ export default class Product extends PageManager {
     }
 
     renderRelatedProducts() {
-        const container = document.getElementById('recommendedProducts');
+        // const container = document.getElementById('recommendedProducts');
+        // const root = createRoot(container);
+        // root.render(<RecommendedProducts context={this.context}/>);
+    }
+    renderRecommendedProductsSku() {
+        const container = document.getElementById('recommendedProductsSku');
         const root = createRoot(container);
-        root.render(<RecommendedProducts context={this.context}/>);
+        root.render(<RecommendedProductsSku context={this.context}/>);
     }
 }
