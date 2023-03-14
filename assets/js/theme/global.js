@@ -44,6 +44,17 @@ export default class Global extends PageManager {
                 },
             ],
         });
+
+        if ($('.video-slider').length) {
+            $('.video-slider .slide').slick({
+                dots: true,
+                infinite: true,
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 5000,
+            });
+        }
     }
 
     registerPopupLoad() {
