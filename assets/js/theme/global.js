@@ -13,6 +13,7 @@ import cartPreview from './global/cart-preview';
 import privacyCookieNotification from './global/cookieNotification';
 import carousel from './common/carousel';
 import svgInjector from './global/svg-injector';
+import axios from 'axios';
 
 export default class Global extends PageManager {
     onReady() {
@@ -29,6 +30,7 @@ export default class Global extends PageManager {
         svgInjector();
         this.brandsMenuInit();
         this.registerPopupLoad();
+        this.gatOrderStatus();
         $('.slider-discount').slick({
             dots: false,
             infinite: true,
@@ -81,6 +83,34 @@ export default class Global extends PageManager {
 
         for (const brand of alphabets) {
             $brandsWrapper.append($.parseHTML(brandLink(brand)));
+        }
+    }
+
+    async gatOrderStatus() {
+        if (!this.context.customerID) return;
+
+        const config = {
+            method: 'get',
+            url: `http://localhost:4000/orders?customer=${this.context.customerID}`,
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'Access-Control-Allow-Origin': '*',
+            },
+        };
+
+        const response = await axios(config);
+        let incompletedOrders = 0;
+        response.data.forEach(order => {
+            if (order.status !== 'Completed' && order.status !== 'Shipped') {
+                incompletedOrders++;
+            }
+        });
+        console.log(response.data)
+        if (incompletedOrders === 0) {
+            $('#orderStatus').text('All of your orders were completed');
+        } else {
+            $('#orderStatus').text(`You have ${incompletedOrders} incomplete orders`);
         }
     }
 }
